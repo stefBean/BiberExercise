@@ -156,12 +156,7 @@ function edit(resource) {
             */
 
             fetch(`/api/resources/${resource.id}`,
-                { method: 'PUT',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify(resource)
-                })
+                { method: 'PUT' })
                 .then(response =>
                     response.status === 204 ? add(resource, document.getElementById(resource.idforDOM)) : alert("Resource could not be saved.")
                 )
@@ -197,6 +192,7 @@ function remove(resource) {
     one that contains an id).
  */
 function create() {
+
     const resource = new Student();
     const formCreator = new ElementCreator("article")
         .append(new ElementCreator("h3").text("Create New Student"));
@@ -216,17 +212,21 @@ function create() {
             resource.isGraduated = document.getElementById("resource-isGraduated").checked;
             resource.birthDate = document.getElementById("resource-birthDate").value;
 
-        fetch(`/api/resources/${resource.id}`,
-            { method: 'POST' ,
+            fetch('/api/resources', {
+                method: 'POST',
                 headers: {
-                'Content-Type': 'application/json'
+                    'Content-Type': 'application/json'
                 },
                 body: JSON.stringify(resource)
-            })
-            .then(response =>
-                response.status === 204 ? add(response.json().then(resource => add(Object.assign(new Student(),resource))), document.getElementById(resource.idforDOM)) : alert("Resource could not be saved.")
-            )
-            .catch(() => alert("Resource could not be saved."));
+            }).then(response => {
+                if (response.ok) {
+                    return response.json();
+                } else {
+                    throw new Error("Error creating student.");
+                }
+            }).then(newResource => {
+                add(Object.assign(new Student(), newResource));
+            }).catch(() => alert("Error creating student."));
     }));
 
     const parent = document.querySelector('main');
