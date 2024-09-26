@@ -130,8 +130,11 @@ function edit(resource) {
     formCreator
         .append(new ElementCreator("label").text("Name").with("for", "resource-name"))
         .append(new ElementCreator("input").id("resource-name").with("type", "text").with("value", resource.name))
+        .append(new ElementCreator("label").text("Age").with("for", "resource-age"))
         .append(new ElementCreator("input").id("resource-age").with("type", "number").with("value", resource.age))
+        .append(new ElementCreator("label").text("Graduated").with("for", "resource-isGraduated"))
         .append(new ElementCreator("input").id("resource-isGraduated").with("type", "checkbox").with("checked", resource.isGraduated))
+        .append(new ElementCreator("label").text("Birthday").with("for", "resource-birthDate"))
         .append(new ElementCreator("input").id("resource-birthDate").with("type", "date").with("value", resource.birthDate));
 
     /* In the end, we add the code to handle saving the resource on the server and terminating edit mode */
@@ -156,12 +159,16 @@ function edit(resource) {
             */
 
             fetch(`/api/resources/${resource.id}`,
-                { method: 'PUT' })
+                { method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(resource)
+                })
                 .then(response =>
                     response.status === 204 ? add(resource, document.getElementById(resource.idforDOM)) : alert("Resource could not be saved.")
                 )
-                .catch(() => alert("Resource could not be saved."));
-
+                .catch(() => alert("Resource can't be saved."));
 
 /*
             fetch(`/api/resources/${resource.id}`, {
@@ -198,9 +205,13 @@ function create() {
         .append(new ElementCreator("h3").text("Create New Student"));
 
     formCreator
+        .append(new ElementCreator("label").text("Name").with("for", "resource-name"))
         .append(new ElementCreator("input").id("resource-name").with("type", "text"))
+        .append(new ElementCreator("label").text("Age").with("for", "resource-age"))
         .append(new ElementCreator("input").id("resource-age").with("type", "number"))
+        .append(new ElementCreator("label").text("Graduated").with("for", "resource-isGraduated"))
         .append(new ElementCreator("input").id("resource-isGraduated").with("type", "checkbox"))
+        .append(new ElementCreator("label").text("Birthday").with("for", "resource-birthDate"))
         .append(new ElementCreator("input").id("resource-birthDate").with("type", "date"));
 
     formCreator
