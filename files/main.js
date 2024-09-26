@@ -158,30 +158,30 @@ function edit(resource) {
                the resource in the list.
             */
 
-            fetch(`/api/resources/${resource.id}`,
-                { method: 'PUT',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify(resource)
-                })
-                .then(response =>
-                    response.status === 204 ? add(resource, document.getElementById(resource.idforDOM)) : alert("Resource could not be saved.")
-                )
-                .catch(() => alert("Resource can't be saved."));
+            /*           fetch(`/api/resources/${resource.id}`,
+                           { method: 'PUT',
+                               headers: {
+                                   'Content-Type': 'application/json'
+                               },
+                               body: JSON.stringify(resource)
+                           })
+                           .then(response =>
+                               response.status === 204 ? add(resource, document.getElementById(resource.idforDOM)) : alert("Resource could not be saved.")
+                           )
+                           .catch(() => alert("Resource can't be saved."));
+            */
 
-/*
-            fetch(`/api/resources/${resource.id}`, {
-                method: 'PUT',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(resource)
-            }).then(updatedResource => {
-                remove(resource);
-                add(resource, document.getElementById(resource.idforDOM));  // <- Call this after the resource is updated successfully on the server
-            }).catch(() => alert("Resource could not be saved."));
-*/
+                       fetch(`/api/resources/${resource.id}`, {
+                           method: 'PUT',
+                           headers: {
+                               'Content-Type': 'application/json'
+                           },
+                           body: JSON.stringify(resource)
+                       }).then(updatedResource => {
+                           remove(resource);
+                           add(resource, document.getElementById(resource.idforDOM));  // <- Call this after the resource is updated successfully on the server
+                       }).catch(() => alert("Resource could not be saved."));
+
 
 
         }))
